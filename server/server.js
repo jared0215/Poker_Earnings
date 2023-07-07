@@ -11,6 +11,7 @@ app.use(express.urlencoded({ extended: true })); // Allows JSON Objects with str
 require("./config/mongoose.config.js");
 
 // Require routes
-require("./routes/author.routes.js")(app);
+require("./routes/UserRoutes/user.routes.js")(app);
+require("./routes/PokerRoutes/poker.routes.js")(app);
 
 app.listen(port, () => console.log(`Listening on port: ${port}`));
