@@ -38,7 +38,7 @@ module.exports.updateUser = (req, res) => {
 
 // DELETE
 module.exports.deleteUser = (req, res) => {
-    User.findByIdAndDelete(req.params.id)
+    User.findByIdAndDelete(req.params.id, { new: true })
         .then((deletedUser) => res.json(deletedUser))
         .catch((err) =>
             res.json({ message: "Something went wrong", error: err })
