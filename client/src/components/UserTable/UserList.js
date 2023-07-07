@@ -14,7 +14,7 @@ const UserList = (props) => {
             {users.map((user) => {
                 return (
                     <p key={user._id}>
-                        <Link to={"/users/edit/" + user._id}>
+                        <Link to={`/users/${user._id}/poker/`}>
                             {user.firstName}
                             {user.lastName}
                             {user.email}

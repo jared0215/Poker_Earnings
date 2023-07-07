@@ -7,4 +7,6 @@ module.exports = (app) => {
     app.get("/api/poker/:id", PokerController.getOnePoker);
     app.put("/api/poker/:id", PokerController.updatePoker);
     app.delete("/api/poker/:id", PokerController.deletePoker);
+    // Delete all poker games
+    app.delete("/api/poker", PokerController.deleteAllPokerGames);
 };

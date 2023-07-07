@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Poker = require("../../models/Poker/poker.model");
 
 const UserSchema = new mongoose.Schema(
     {

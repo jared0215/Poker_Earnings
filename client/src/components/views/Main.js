@@ -30,14 +30,7 @@ const Main = () => {
     };
 
     const removeFromDom = (userId) => {
-        axios
-            .delete(`http://localhost:8000/api/users/${userId}`)
-            .then((res) => {
-                setUserList(userList.filter((user) => user._id !== userId));
-            })
-            .catch((err) => {
-                setErrors(err.response.data.errors);
-            });
+        setUserList(userList.filter((user) => user._id !== userId));
     };
 
     return (
