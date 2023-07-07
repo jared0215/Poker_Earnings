@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 const PokerForm = () => {
     const { id } = useParams(); // Get the user id from route params
@@ -83,6 +83,7 @@ const PokerForm = () => {
                 </div>
                 <button type="submit">Add</button>
             </form>
+            <Link to={`/users/${id}/poker/games`}>View your Game History</Link>
         </div>
     );
 };

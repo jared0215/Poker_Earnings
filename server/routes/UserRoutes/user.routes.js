@@ -8,5 +8,5 @@ module.exports = (app) => {
     app.put("/api/users/:id", UserController.updateUser);
     app.delete("/api/users/:id", UserController.deleteUser);
 
-    app.get("/api/users/:id/poker", UserController.getUsersPokerGames);
+    app.get("/api/users/:id/poker/games", UserController.getUsersPokerGames);
 };
