@@ -23,6 +23,11 @@ const UserList = (props) => {
                             userId={user._id}
                             successCallback={() => removeFromDom(user._id)}
                         />
+                        <br />
+                        {/* Link to edit user */}
+                        <Link to={`/users/edit/${user._id}`}>Edit</Link>
+                        <br />
+                        <br />
                     </p>
                 );
             })}
