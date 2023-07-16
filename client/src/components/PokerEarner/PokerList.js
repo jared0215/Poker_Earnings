@@ -99,7 +99,7 @@ const PokerList = () => {
                                         Date: {formatDate(pokerGame.date)}
                                     </p>
                                     <p className="mb-0">
-                                        Amount: {pokerGame.amount}
+                                        Amount: ${pokerGame.amount}
                                     </p>
                                     <p
                                         className={`mb-0 ${
@@ -138,7 +138,7 @@ const PokerList = () => {
                             totalAmount >= 0 ? "text-success" : "text-danger"
                         }`}
                     >
-                        Total Amount: {totalAmount}
+                        Total Amount: $ {totalAmount}
                     </h3>
                 </div>
             )}
