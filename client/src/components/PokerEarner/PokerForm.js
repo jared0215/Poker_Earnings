@@ -40,10 +40,11 @@ const PokerForm = () => {
     };
 
     return (
-        <div className="w-50 mx-auto bg-dark text-light rounded m-5">
-            <h2 className="fs-2 m-3 pt-5 text-center">Add Poker Game</h2>
+        <div className="w-75 mx-auto bg-dark text-light rounded m-5 pb-5">
+            <h2 className="fs-2 my-5 pt-5 text-center">Add Poker Game</h2>
+            <hr />
             <Form onSubmit={handleSubmit} className="w-50 mx-auto fs-5">
-                <Form.Group className="mt-4">
+                <Form.Group className="mt-5">
                     <div>
                         <Form.Label className="me-3">Result:</Form.Label>
                         <Form.Check
@@ -92,11 +93,17 @@ const PokerForm = () => {
                         onChange={(e) => setDate(e.target.value)}
                     />
                 </Form.Group>
-                <Button variant="primary" type="submit" className="mt-4">
-                    Add Poker Game
-                </Button>
+                <div className="d-flex justify-content-between">
+                    <Button variant="primary" type="submit" className="my-5">
+                        Add Poker Game
+                    </Button>
+                    <Link to={`/users/${id}/poker/games`} className="my-5">
+                        <Button variant="success">
+                            View your Game History
+                        </Button>
+                    </Link>
+                </div>
             </Form>
-            <Link to={`/users/${id}/poker/games`}>View your Game History</Link>
         </div>
     );
 };
