@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Card, Button } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import DeleteButton from "../DeleteButton/Delete";
 
 const UserList = (props) => {

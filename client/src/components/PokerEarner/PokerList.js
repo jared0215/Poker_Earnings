@@ -42,7 +42,7 @@ const PokerList = () => {
             return sortType === "asc" ? dateA - dateB : dateB - dateA;
         });
         setPokerList([...sortedPokerList]);
-    }, [sortType]);
+    }, [sortType, pokerList]);
 
     const formatDate = (dateString) => {
         let serverDate = new Date(dateString);

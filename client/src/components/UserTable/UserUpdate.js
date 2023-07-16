@@ -19,7 +19,7 @@ const UserUpdate = () => {
             .catch((err) => {
                 console.log(err);
             });
-    }, []);
+    }, [id]);
 
     const updateUser = (user) => {
         axios
