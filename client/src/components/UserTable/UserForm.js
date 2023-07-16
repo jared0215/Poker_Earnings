@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
@@ -11,16 +11,29 @@ const UserForm = ({
     heading,
     errors,
 }) => {
-    const [firstName, setFirstName] = useState(initialFirstName);
-    const [lastName, setLastName] = useState(initialLastName);
-    const [email, setEmail] = useState(initialEmail);
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [initialValues, setInitialValues] = useState({
+        firstName: initialFirstName,
+        lastName: initialLastName,
+        email: initialEmail,
+    });
+
+    useEffect(() => {
+        setFirstName(initialValues.firstName);
+        setLastName(initialValues.lastName);
+        setEmail(initialValues.email);
+    }, [initialValues]);
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
+        if (errors && Object.keys(errors).length === 0) {
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+        }
         onSubmitProp({ firstName, lastName, email });
-        setFirstName("");
-        setLastName("");
-        setEmail("");
     };
 
     const formatErrors = (errorObject) => {

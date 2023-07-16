@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const PokerForm = () => {
@@ -10,9 +10,17 @@ const PokerForm = () => {
     const [amount, setAmount] = useState("");
     const [location, setLocation] = useState("");
     const [date, setDate] = useState("");
+    const [error, setError] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setError(""); // Reset error state
+
+        if (!amount || !location || !date) {
+            setError("All fields are required"); // Set error message if any field is empty
+            return;
+        }
+
         let serverDate = new Date(date);
         let dateToSend = serverDate.toISOString();
 
@@ -24,14 +32,11 @@ const PokerForm = () => {
             date: dateToSend, // send date in ISO string format
         };
 
-        console.log(newPokerGame);
-        console.log("UserID: ", id);
         axios
             .post(`http://localhost:8000/api/poker`, newPokerGame)
             .then((res) => {
                 console.log(res);
                 console.log(res.data);
-                // Reset state here, in the then() callback
                 setResult("Win");
                 setAmount("");
                 setLocation("");
@@ -48,6 +53,7 @@ const PokerForm = () => {
             <h2 className="fs-2 my-5 pt-5 text-center">Add Poker Game</h2>
             <hr />
             <Form onSubmit={handleSubmit} className="w-50 mx-auto fs-5">
+                {error && <Alert variant="danger">{error}</Alert>}
                 <Form.Group className="mt-5">
                     <div>
                         <Form.Label className="me-3">Result:</Form.Label>
@@ -79,6 +85,7 @@ const PokerForm = () => {
                         type="number"
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
+                        required
                     />
                 </Form.Group>
                 <Form.Group className="mt-4">
@@ -87,6 +94,7 @@ const PokerForm = () => {
                         type="text"
                         value={location}
                         onChange={(e) => setLocation(e.target.value)}
+                        required
                     />
                 </Form.Group>
                 <Form.Group className="mt-4">
@@ -95,6 +103,7 @@ const PokerForm = () => {
                         type="date"
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
+                        required
                     />
                 </Form.Group>
                 <div className="d-flex justify-content-between">

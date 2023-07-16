@@ -8,7 +8,7 @@ const PokerList = () => {
     const [pokerList, setPokerList] = useState([]);
     const [error, setError] = useState(false);
     const [totalAmount, setTotalAmount] = useState(0);
-    const [sortType, setSortType] = useState("asc"); // new state for sortType
+    const [sortType, setSortType] = useState("asc");
 
     useEffect(() => {
         axios
@@ -35,14 +35,13 @@ const PokerList = () => {
     }, [pokerList]);
 
     useEffect(() => {
-        // new useEffect to sort the pokerList on every sortType change
-        const sortedPokerList = pokerList.sort((a, b) => {
+        const sortedList = [...pokerList].sort((a, b) => {
             const dateA = new Date(a.date);
             const dateB = new Date(b.date);
             return sortType === "asc" ? dateA - dateB : dateB - dateA;
         });
-        setPokerList([...sortedPokerList]);
-    }, [sortType, pokerList]);
+        setPokerList(sortedList);
+    }, [sortType]);
 
     const formatDate = (dateString) => {
         let serverDate = new Date(dateString);
@@ -58,8 +57,8 @@ const PokerList = () => {
         axios
             .delete(`http://localhost:8000/api/poker/${pokerGameId}`)
             .then((res) => {
-                setPokerList(
-                    pokerList.filter(
+                setPokerList((prevList) =>
+                    prevList.filter(
                         (pokerGame) => pokerGame._id !== pokerGameId
                     )
                 );

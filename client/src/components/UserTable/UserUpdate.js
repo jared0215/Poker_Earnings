@@ -7,11 +7,12 @@ const UserUpdate = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [user, setUser] = useState();
+    const [errors, setErrors] = useState({});
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         axios
-            .get("http://localhost:8000/api/users/" + id)
+            .get(`http://localhost:8000/api/users/${id}`)
             .then((res) => {
                 setUser(res.data);
                 setLoaded(true);
@@ -21,14 +22,23 @@ const UserUpdate = () => {
             });
     }, [id]);
 
-    const updateUser = (user) => {
+    const updateUser = (userData) => {
         axios
-            .put("http://localhost:8000/api/users/" + id, user)
+            .put(`http://localhost:8000/api/users/${id}`, userData)
             .then((res) => {
                 console.log(res);
                 navigate("/");
             })
             .catch((err) => {
+                if (
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.errors
+                ) {
+                    setErrors(err.response.data.errors);
+                } else {
+                    setErrors({});
+                }
                 console.log(err);
             });
     };
@@ -41,9 +51,8 @@ const UserUpdate = () => {
                     initialFirstName={user.firstName}
                     initialLastName={user.lastName}
                     initialEmail={user.email}
-                    initialPassword={user.password}
-                    initialConfirmPassword={user.confirmPassword}
                     heading="Update this User"
+                    errors={errors}
                 />
             )}
         </div>

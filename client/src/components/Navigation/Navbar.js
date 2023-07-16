@@ -2,6 +2,8 @@ import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 
+import logo from "./img/logo-no-background.png";
+
 const NavBar = ({ userListRef }) => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -24,11 +26,21 @@ const NavBar = ({ userListRef }) => {
     };
 
     return (
-        <Navbar bg="dark" variant="dark" expand="lg" className="flex-row px-5">
-            <Navbar.Brand href="/home">Poker Earnings Tracker</Navbar.Brand>
+        <Navbar
+            bg="dark"
+            variant="dark"
+            expand="lg"
+            className="flex-column justify-content-center align-items-center"
+        >
+            <Navbar.Brand href="/home">
+                <img src={logo} alt="Logo" width="500" height="82" />
+            </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="ml-auto">
+            <Navbar.Collapse
+                id="basic-navbar-nav"
+                className="justify-content-center"
+            >
+                <Nav>
                     <Nav.Link onClick={handleUsersClick} href="/users">
                         Users
                     </Nav.Link>
