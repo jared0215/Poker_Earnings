@@ -41,11 +41,11 @@ const PokerForm = () => {
 
     return (
         <div className="w-50 mx-auto bg-dark text-light rounded m-5">
-            <h2 className="fs-2 m-3 pt-5">Add Poker Game</h2>
+            <h2 className="fs-2 m-3 pt-5 text-center">Add Poker Game</h2>
             <Form onSubmit={handleSubmit} className="w-50 mx-auto fs-5">
-                <Form.Group>
-                    <Form.Label>Result:</Form.Label>
+                <Form.Group className="mt-4">
                     <div>
+                        <Form.Label className="me-3">Result:</Form.Label>
                         <Form.Check
                             inline
                             type="radio"
@@ -68,7 +68,7 @@ const PokerForm = () => {
                         />
                     </div>
                 </Form.Group>
-                <Form.Group>
+                <Form.Group className="mt-4">
                     <Form.Label>Amount:</Form.Label>
                     <Form.Control
                         type="number"
@@ -76,7 +76,7 @@ const PokerForm = () => {
                         onChange={(e) => setAmount(e.target.value)}
                     />
                 </Form.Group>
-                <Form.Group>
+                <Form.Group className="mt-4">
                     <Form.Label>Location:</Form.Label>
                     <Form.Control
                         type="text"
@@ -84,7 +84,7 @@ const PokerForm = () => {
                         onChange={(e) => setLocation(e.target.value)}
                     />
                 </Form.Group>
-                <Form.Group>
+                <Form.Group className="mt-4">
                     <Form.Label>Date:</Form.Label>
                     <Form.Control
                         type="date"
@@ -92,7 +92,7 @@ const PokerForm = () => {
                         onChange={(e) => setDate(e.target.value)}
                     />
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" className="mt-4">
                     Add Poker Game
                 </Button>
             </Form>

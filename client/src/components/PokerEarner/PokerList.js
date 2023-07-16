@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
-import DeletePoker from "../DeleteButton/DeletePoker";
+import { Button, ListGroup, ListGroupItem } from "react-bootstrap";
 
 const PokerList = () => {
     const { id } = useParams();
@@ -53,7 +53,7 @@ const PokerList = () => {
 
     return (
         <div>
-            <h1>Poker List</h1>
+            <h1 className="mb-4">List of Users Games</h1>
             {error ? (
                 <div>
                     <h3>Error</h3>
@@ -61,23 +61,38 @@ const PokerList = () => {
                 </div>
             ) : (
                 <div>
-                    <ul>
+                    <ListGroup>
                         {pokerList.map((pokerGame) => (
-                            <li key={pokerGame._id}>
-                                {/* Display poker game details */}
-                                <h3>{pokerGame.location}</h3>
-                                <h3>{formatDate(pokerGame.date)}</h3>
-                                <h3>{pokerGame.amount}</h3>
-                                <h3>{pokerGame.result}</h3>
-                                <DeletePoker
-                                    pokerGameId={pokerGame._id}
-                                    onDelete={handleDeletePoker}
-                                />
-                                <br />
-                            </li>
+                            <ListGroupItem
+                                key={pokerGame._id}
+                                className="d-flex justify-content-between"
+                            >
+                                <div>
+                                    <h5 className="mb-0">
+                                        Location: {pokerGame.location}
+                                    </h5>
+                                    <p className="mb-0">
+                                        Date: {formatDate(pokerGame.date)}
+                                    </p>
+                                    <p className="mb-0">
+                                        Amount: {pokerGame.amount}
+                                    </p>
+                                    <p className="mb-0">
+                                        Result: {pokerGame.result}
+                                    </p>
+                                </div>
+                                <Button
+                                    variant="danger"
+                                    onClick={() =>
+                                        handleDeletePoker(pokerGame._id)
+                                    }
+                                >
+                                    Delete
+                                </Button>
+                            </ListGroupItem>
                         ))}
-                    </ul>
-                    <h3>Total Amount: {totalAmount}</h3>
+                    </ListGroup>
+                    <h3 className="mt-4">Total Amount: {totalAmount}</h3>
                 </div>
             )}
         </div>

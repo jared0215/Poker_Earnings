@@ -5,24 +5,26 @@ import { Card, Button } from "react-bootstrap";
 import DeleteButton from "../DeleteButton/Delete";
 
 const UserList = (props) => {
-    const { users, removeFromDom } = props;
+    const { users, removeFromDom, heading } = props;
 
     return (
-        <div>
-            <h1 className="fs-1 m-5">Manage your Users</h1>
+        <div className="d-flex flex-column align-items-center">
+            <h1 className="fs-1 m-5">{heading}</h1>
             {users.map((user) => (
-                <Card key={user._id} className="mb-3">
+                <Card key={user._id} className="mb-3 w-100">
                     <Card.Body>
-                        <Card.Title>
+                        <Card.Title className="text-center">
                             <Link to={`/users/${user._id}/poker/`}>
                                 {user.firstName} {user.lastName}
                             </Link>
                         </Card.Title>
-                        <Card.Text>{user.email}</Card.Text>
-                        <div className="d-flex justify-content-evenly w-25 mx-auto">
+                        <Card.Text className="text-center fs-5">
+                            {user.email}
+                        </Card.Text>
+                        <div className="d-flex justify-content-center">
                             <Link
                                 to={`/users/edit/${user._id}`}
-                                className="btn btn-primary"
+                                className="btn btn-primary mx-2"
                             >
                                 Edit
                             </Link>

@@ -3,7 +3,7 @@ import axios from "axios";
 import UserForm from "../UserTable/UserForm";
 import UserList from "../UserTable/UserList";
 
-const Main = () => {
+const Main = ({ userListRef }) => {
     const [userList, setUserList] = useState([]);
     const [errors, setErrors] = useState([]);
 
@@ -44,10 +44,17 @@ const Main = () => {
                         initialLastName=""
                         initialEmail=""
                         errors={errors}
-                        heading="Manage your Users"
+                        heading="Add your User"
                     />
                     <hr />
-                    <UserList users={userList} removeFromDom={removeFromDom} />
+                    <div ref={userListRef}>
+                        <UserList
+                            users={userList}
+                            removeFromDom={removeFromDom}
+                            errors={errors}
+                            heading="Manage your Users"
+                        />
+                    </div>
                 </div>
                 <div className="m-5">
                     <br />
