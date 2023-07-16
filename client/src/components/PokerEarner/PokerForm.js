@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
+import { Form, Button } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const PokerForm = () => {
-    const { id } = useParams(); // Get the user id from route params
+    const { id } = useParams();
     const [result, setResult] = useState("Win");
     const [amount, setAmount] = useState("");
     const [location, setLocation] = useState("");
@@ -12,7 +14,7 @@ const PokerForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const newPokerGame = {
-            user: id, // Use id here
+            user: id,
             result,
             amount,
             location,
@@ -23,66 +25,77 @@ const PokerForm = () => {
         axios
             .post(`http://localhost:8000/api/poker`, newPokerGame)
             .then((res) => {
-                setResult("");
+                console.log(res);
+                console.log(res.data);
+                // Reset state here, in the then() callback
+                setResult("Win");
                 setAmount("");
                 setLocation("");
                 setDate("");
             })
             .catch((err) => {
                 console.log(err);
+                console.log(err.response);
             });
     };
 
     return (
-        <div>
-            <h2>Add Poker Game</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <input
-                        type="radio"
-                        id="win"
-                        name="result"
-                        value="win"
-                        checked={result === "Win"}
-                        onChange={() => setResult("Win")}
-                    />
-                    <label htmlFor="win">Win</label>
-                    <input
-                        type="radio"
-                        id="loss"
-                        name="result"
-                        value="loss"
-                        checked={result === "Loss"}
-                        onChange={() => setResult("Loss")}
-                    />
-                    <label htmlFor="loss">Loss</label>
-                </div>
-                <div>
-                    <label>Amount:</label>
-                    <input
+        <div className="w-50 mx-auto bg-dark text-light rounded m-5">
+            <h2 className="fs-2 m-3 pt-5">Add Poker Game</h2>
+            <Form onSubmit={handleSubmit} className="w-50 mx-auto fs-5">
+                <Form.Group>
+                    <Form.Label>Result:</Form.Label>
+                    <div>
+                        <Form.Check
+                            inline
+                            type="radio"
+                            id="win"
+                            label="Win"
+                            name="result"
+                            value="Win"
+                            checked={result === "Win"}
+                            onChange={() => setResult("Win")}
+                        />
+                        <Form.Check
+                            inline
+                            type="radio"
+                            id="loss"
+                            label="Loss"
+                            name="result"
+                            value="Loss"
+                            checked={result === "Loss"}
+                            onChange={() => setResult("Loss")}
+                        />
+                    </div>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Amount:</Form.Label>
+                    <Form.Control
                         type="number"
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
                     />
-                </div>
-                <div>
-                    <label>Location:</label>
-                    <input
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Location:</Form.Label>
+                    <Form.Control
                         type="text"
                         value={location}
                         onChange={(e) => setLocation(e.target.value)}
                     />
-                </div>
-                <div>
-                    <label>Date:</label>
-                    <input
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Date:</Form.Label>
+                    <Form.Control
                         type="date"
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
                     />
-                </div>
-                <button type="submit">Add</button>
-            </form>
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                    Add Poker Game
+                </Button>
+            </Form>
             <Link to={`/users/${id}/poker/games`}>View your Game History</Link>
         </div>
     );

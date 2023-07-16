@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import DeletePoker from "../DeleteButton/DeletePoker";
 
 const PokerList = () => {
     const { id } = useParams();
@@ -42,6 +43,14 @@ const PokerList = () => {
         return formattedDate;
     };
 
+    const handleDeletePoker = (pokerGameId) => {
+        // Handle deletion logic here
+        // For example, update the pokerList state to remove the deleted poker game
+        setPokerList(
+            pokerList.filter((pokerGame) => pokerGame._id !== pokerGameId)
+        );
+    };
+
     return (
         <div>
             <h1>Poker List</h1>
@@ -60,6 +69,11 @@ const PokerList = () => {
                                 <h3>{formatDate(pokerGame.date)}</h3>
                                 <h3>{pokerGame.amount}</h3>
                                 <h3>{pokerGame.result}</h3>
+                                <DeletePoker
+                                    pokerGameId={pokerGame._id}
+                                    onDelete={handleDeletePoker}
+                                />
+                                <br />
                             </li>
                         ))}
                     </ul>

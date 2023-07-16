@@ -34,8 +34,7 @@ const UserUpdate = () => {
     };
 
     return (
-        <div>
-            <h1>Update a User</h1>
+        <div className="w-50 mx-auto">
             {loaded && (
                 <UserForm
                     onSubmitProp={updateUser}
@@ -44,6 +43,7 @@ const UserUpdate = () => {
                     initialEmail={user.email}
                     initialPassword={user.password}
                     initialConfirmPassword={user.confirmPassword}
+                    heading="Update this User"
                 />
             )}
         </div>

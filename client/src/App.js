@@ -1,6 +1,6 @@
 import "./App.css";
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
 import Main from "./components/views/Main";
 import UserUpdate from "./components/UserTable/UserUpdate";
 import PokerForm from "./components/PokerEarner/PokerForm";

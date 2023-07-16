@@ -44,8 +44,13 @@ const Main = () => {
                         initialLastName=""
                         initialEmail=""
                         errors={errors}
+                        heading="Manage your Users"
                     />
+                    <hr />
                     <UserList users={userList} removeFromDom={removeFromDom} />
+                </div>
+                <div className="m-5">
+                    <br />
                 </div>
             </div>
         </div>

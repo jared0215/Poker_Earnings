@@ -16,10 +16,7 @@ const DeleteButton = (props) => {
     };
 
     return (
-        <button
-            className="btn btn-danger ms-1 w-10 mx-auto"
-            onClick={deleteUser}
-        >
+        <button className="btn btn-danger" onClick={deleteUser}>
             Delete
         </button>
     );

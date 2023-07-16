@@ -42,12 +42,10 @@ module.exports.deleteUser = (req, res) => {
     User.findById(req.params.id)
         .then((user) => {
             if (!user) {
-                return res
-                    .status(404)
-                    .json({
-                        message: "No user found with this ID",
-                        error: "Not found",
-                    });
+                return res.status(404).json({
+                    message: "No user found with this ID",
+                    error: "Not found",
+                });
             }
             return Poker.deleteMany({ _id: { $in: user.pokerGames } })
                 .then(() => {
@@ -84,6 +82,32 @@ module.exports.getUsersPokerGames = (req, res) => {
     User.findById(req.params.id)
         .populate("pokerGames")
         .then((user) => res.json(user.pokerGames))
+        .catch((err) =>
+            res.json({ message: "Something went wrong", error: err })
+        );
+};
+
+// Update a poker game of a user
+module.exports.updatePokerGame = (req, res) => {
+    User.findById(req.params.id)
+        .then((user) => {
+            let pokerGame = user.pokerGames.id(req.params.gameId);
+            pokerGame.set(req.body);
+            return user.save();
+        })
+        .then(() => res.json({ message: "Poker game updated successfully!" }))
+        .catch((err) =>
+            res.json({ message: "Something went wrong", error: err })
+        );
+};
+
+// Get one poker game of a user
+module.exports.getOnePokerGame = (req, res) => {
+    User.findById(req.params.id)
+        .then((user) => {
+            let pokerGame = user.pokerGames.id(req.params.gameId);
+            res.json(pokerGame);
+        })
         .catch((err) =>
             res.json({ message: "Something went wrong", error: err })
         );

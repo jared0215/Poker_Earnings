@@ -4,24 +4,32 @@ const { User } = require("../../models/User/user.model"); // Add this line
 // CREATE
 module.exports.createPoker = (req, res) => {
     const pokerGame = new Poker({
-        user: req.body.user, // Assuming that user is being sent in request body
+        user: req.body.user,
         result: req.body.result,
         amount: req.body.amount,
         location: req.body.location,
         date: req.body.date,
     });
 
-    pokerGame.save().then((newPokerGame) => {
-        console.log("New poker game:", newPokerGame);
+    pokerGame
+        .save()
+        .then((newPokerGame) => {
+            console.log("New poker game:", newPokerGame);
 
-        return User.updateOne(
-            { _id: newPokerGame.user },
-            { $push: { pokerGames: newPokerGame._id } }
-        ).then((updateResult) => {
-            console.log("User update result:", updateResult);
-            return newPokerGame;
+            return User.updateOne(
+                { _id: newPokerGame.user },
+                { $push: { pokerGames: newPokerGame._id } }
+            ).then((updateResult) => {
+                console.log("User update result:", updateResult);
+
+                // Send back the new poker game
+                res.json(newPokerGame);
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
         });
-    });
 };
 
 // READ ALL
@@ -62,22 +70,6 @@ module.exports.deletePoker = (req, res) => {
         );
 };
 
-// Create Users Poker Game
-module.exports.createUsersPokerGame = (req, res) => {
-    Poker.create(req.body)
-        .then((newPokerGame) => {
-            // Also update the user document with this new poker game
-            return User.updateOne(
-                { _id: newPokerGame.user },
-                { $push: { pokerGames: newPokerGame._id } }
-            ).then(() => newPokerGame); // pass newPokerGame to the next then block
-        })
-        .then((newPokerGame) => res.json(newPokerGame))
-        .catch((err) =>
-            res.json({ message: "Something went wrong", error: err })
-        );
-};
-
 // Delete All Poker Games
 module.exports.deleteAllPokerGames = (req, res) => {
     Poker.deleteMany()
@@ -92,3 +84,19 @@ module.exports.deleteAllPokerGames = (req, res) => {
             res.json({ message: "Something went wrong", error: err })
         );
 };
+
+// Create Users Poker Game
+// module.exports.createUsersPokerGame = (req, res) => {
+//     Poker.create(req.body)
+//         .then((newPokerGame) => {
+//             // Also update the user document with this new poker game
+//             return User.updateOne(
+//                 { _id: newPokerGame.user },
+//                 { $push: { pokerGames: newPokerGame._id } }
+//             ).then(() => newPokerGame); // pass newPokerGame to the next then block
+//         })
+//         .then((newPokerGame) => res.json(newPokerGame))
+//         .catch((err) =>
+//             res.json({ message: "Something went wrong", error: err })
+//         );
+// };
