@@ -8,6 +8,7 @@ const PokerList = () => {
     const [pokerList, setPokerList] = useState([]);
     const [error, setError] = useState(false);
     const [totalAmount, setTotalAmount] = useState(0);
+    const [sortType, setSortType] = useState("asc"); // new state for sortType
 
     useEffect(() => {
         axios
@@ -22,7 +23,6 @@ const PokerList = () => {
     }, [id]);
 
     useEffect(() => {
-        // Calculate the total amount
         let total = 0;
         pokerList.forEach((pokerGame) => {
             if (pokerGame.result === "Win") {
@@ -34,6 +34,16 @@ const PokerList = () => {
         setTotalAmount(total);
     }, [pokerList]);
 
+    useEffect(() => {
+        // new useEffect to sort the pokerList on every sortType change
+        const sortedPokerList = pokerList.sort((a, b) => {
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+            return sortType === "asc" ? dateA - dateB : dateB - dateA;
+        });
+        setPokerList([...sortedPokerList]);
+    }, [sortType]);
+
     const formatDate = (dateString) => {
         const options = { year: "numeric", month: "long", day: "numeric" };
         const formattedDate = new Date(dateString).toLocaleDateString(
@@ -44,16 +54,30 @@ const PokerList = () => {
     };
 
     const handleDeletePoker = (pokerGameId) => {
-        // Handle deletion logic here
-        // For example, update the pokerList state to remove the deleted poker game
-        setPokerList(
-            pokerList.filter((pokerGame) => pokerGame._id !== pokerGameId)
-        );
+        axios
+            .delete(`http://localhost:8000/api/poker/${pokerGameId}`)
+            .then((res) => {
+                setPokerList(
+                    pokerList.filter(
+                        (pokerGame) => pokerGame._id !== pokerGameId
+                    )
+                );
+            })
+            .catch((err) => {
+                console.log(err);
+                alert("There was an error deleting the game");
+            });
     };
 
     return (
-        <div>
+        <div className="w-75 mx-auto mt-5">
             <h1 className="mb-4">List of Users Games</h1>
+            <Button
+                onClick={() => setSortType(sortType === "asc" ? "desc" : "asc")}
+                className="mb-4 mx-auto"
+            >
+                Sort by date ({sortType === "asc" ? "Descending" : "Ascending"})
+            </Button>
             {error ? (
                 <div>
                     <h3>Error</h3>
@@ -81,14 +105,25 @@ const PokerList = () => {
                                         Result: {pokerGame.result}
                                     </p>
                                 </div>
-                                <Button
-                                    variant="danger"
-                                    onClick={() =>
-                                        handleDeletePoker(pokerGame._id)
-                                    }
-                                >
-                                    Delete
-                                </Button>
+                                <div className="flex-row h-100 align-self-center">
+                                    <Button
+                                        variant="danger"
+                                        className="h-25 m-3"
+                                        onClick={() =>
+                                            handleDeletePoker(pokerGame._id)
+                                        }
+                                    >
+                                        Delete
+                                    </Button>
+                                    <Link to={`/poker/edit/${pokerGame._id}`}>
+                                        <Button
+                                            variant="primary"
+                                            className="h-25"
+                                        >
+                                            Edit
+                                        </Button>
+                                    </Link>
+                                </div>
                             </ListGroupItem>
                         ))}
                     </ListGroup>

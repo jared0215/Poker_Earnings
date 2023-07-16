@@ -84,19 +84,3 @@ module.exports.deleteAllPokerGames = (req, res) => {
             res.json({ message: "Something went wrong", error: err })
         );
 };
-
-// Create Users Poker Game
-// module.exports.createUsersPokerGame = (req, res) => {
-//     Poker.create(req.body)
-//         .then((newPokerGame) => {
-//             // Also update the user document with this new poker game
-//             return User.updateOne(
-//                 { _id: newPokerGame.user },
-//                 { $push: { pokerGames: newPokerGame._id } }
-//             ).then(() => newPokerGame); // pass newPokerGame to the next then block
-//         })
-//         .then((newPokerGame) => res.json(newPokerGame))
-//         .catch((err) =>
-//             res.json({ message: "Something went wrong", error: err })
-//         );
-// };

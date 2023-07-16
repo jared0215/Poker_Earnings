@@ -4,6 +4,7 @@ import Main from "./components/views/Main";
 import UserUpdate from "./components/UserTable/UserUpdate";
 import PokerForm from "./components/PokerEarner/PokerForm";
 import PokerList from "./components/PokerEarner/PokerList";
+import PokerUpdate from "./components/PokerEarner/PokerUpdate";
 import NavBar from "./components/Navigation/Navbar";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
                         path="/users/:id/poker/games"
                         element={<PokerList />}
                     />
+                    <Route path="/poker/edit/:id" element={<PokerUpdate />} />
                 </Routes>
             </BrowserRouter>
         </div>

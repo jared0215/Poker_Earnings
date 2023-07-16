@@ -100,20 +100,6 @@ module.exports.getUsersPokerGames = (req, res) => {
         );
 };
 
-// Update a poker game of a user
-module.exports.updatePokerGame = (req, res) => {
-    User.findById(req.params.id)
-        .then((user) => {
-            let pokerGame = user.pokerGames.id(req.params.gameId);
-            pokerGame.set(req.body);
-            return user.save();
-        })
-        .then(() => res.json({ message: "Poker game updated successfully!" }))
-        .catch((err) =>
-            res.json({ message: "Something went wrong", error: err })
-        );
-};
-
 // Get one poker game of a user
 module.exports.getOnePokerGame = (req, res) => {
     User.findById(req.params.id)
