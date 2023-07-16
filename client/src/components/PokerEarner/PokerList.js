@@ -101,7 +101,13 @@ const PokerList = () => {
                                     <p className="mb-0">
                                         Amount: {pokerGame.amount}
                                     </p>
-                                    <p className="mb-0">
+                                    <p
+                                        className={`mb-0 ${
+                                            pokerGame.result === "Win"
+                                                ? "text-success"
+                                                : "text-danger"
+                                        }`}
+                                    >
                                         Result: {pokerGame.result}
                                     </p>
                                 </div>
@@ -127,7 +133,13 @@ const PokerList = () => {
                             </ListGroupItem>
                         ))}
                     </ListGroup>
-                    <h3 className="mt-4">Total Amount: {totalAmount}</h3>
+                    <h3
+                        className={`mt-4 ${
+                            totalAmount >= 0 ? "text-success" : "text-danger"
+                        }`}
+                    >
+                        Total Amount: {totalAmount}
+                    </h3>
                 </div>
             )}
         </div>
