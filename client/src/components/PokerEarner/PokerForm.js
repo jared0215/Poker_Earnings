@@ -13,13 +13,17 @@ const PokerForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        let serverDate = new Date(date);
+        let dateToSend = serverDate.toISOString();
+
         const newPokerGame = {
             user: id,
             result,
             amount,
             location,
-            date,
+            date: dateToSend, // send date in ISO string format
         };
+
         console.log(newPokerGame);
         console.log("UserID: ", id);
         axios

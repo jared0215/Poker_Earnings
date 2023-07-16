@@ -12,6 +12,16 @@ const PokerUpdate = () => {
     const [location, setLocation] = useState("");
     const [date, setDate] = useState("");
 
+    // Assume `serverDate` is the date you got from the server.
+    const formatDate = (dateString) => {
+        let serverDate = new Date(dateString);
+        let adjustedDate = new Date(
+            serverDate.getTime() + serverDate.getTimezoneOffset() * 60000
+        );
+        let dateToShow = adjustedDate.toISOString().split("T")[0];
+        return dateToShow;
+    };
+
     useEffect(() => {
         axios
             .get("http://localhost:8000/api/poker/" + id)
@@ -20,13 +30,13 @@ const PokerUpdate = () => {
                 setResult(res.data.result);
                 setAmount(res.data.amount);
                 setLocation(res.data.location);
-                setDate(res.data.date);
+                setDate(formatDate(res.data.date));
             })
             .catch((err) => {
                 console.log(err);
                 console.log(err.response);
             });
-    }, []);
+    }, [id]);
 
     const updatePokerGame = (e) => {
         e.preventDefault();
@@ -64,7 +74,6 @@ const PokerUpdate = () => {
                             value="Win"
                             checked={result === "Win"}
                             onChange={() => setResult("Win")}
-                            defaultChecked
                         />
                         <Form.Check
                             inline

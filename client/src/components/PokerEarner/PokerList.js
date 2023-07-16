@@ -45,12 +45,13 @@ const PokerList = () => {
     }, [sortType]);
 
     const formatDate = (dateString) => {
-        const options = { year: "numeric", month: "long", day: "numeric" };
-        const formattedDate = new Date(dateString).toLocaleDateString(
-            undefined,
-            options
+        let serverDate = new Date(dateString);
+        let adjustedDate = new Date(
+            serverDate.getTime() + serverDate.getTimezoneOffset() * 60000
         );
-        return formattedDate;
+        const options = { year: "numeric", month: "long", day: "numeric" };
+        let dateToShow = adjustedDate.toLocaleDateString(undefined, options);
+        return dateToShow;
     };
 
     const handleDeletePoker = (pokerGameId) => {
