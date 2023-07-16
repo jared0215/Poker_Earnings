@@ -19,7 +19,7 @@ const Main = ({ userListRef }) => {
     }, []);
 
     const createUser = (user) => {
-        axios
+        return axios
             .post("http://localhost:8000/api/users", user)
             .then((res) => {
                 setUserList([...userList, res.data]);
@@ -43,9 +43,10 @@ const Main = ({ userListRef }) => {
                         initialFirstName=""
                         initialLastName=""
                         initialEmail=""
-                        errors={errors}
+                        errors={errors} // Pass the errors prop
                         heading="Add your User"
                     />
+
                     <hr />
                     <div ref={userListRef}>
                         <UserList

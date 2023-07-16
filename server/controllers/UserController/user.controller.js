@@ -3,11 +3,24 @@ const { Poker } = require("../../models/Poker/poker.model");
 
 // CREATE
 module.exports.createUser = (req, res) => {
-    User.create(req.body)
-        .then((newUser) => res.json(newUser))
-        .catch((err) =>
-            res.json({ message: "Something went wrong", error: err })
-        );
+    User.findOne({ email: req.body.email }) // Check if the email already exists
+        .then((existingUser) => {
+            if (existingUser) {
+                // If email already exists, return an error
+                return res.status(400).json({
+                    errors: {
+                        email: {
+                            message: "Email already exists",
+                        },
+                    },
+                });
+            }
+            // If email is unique, create the user
+            return User.create(req.body)
+                .then((newUser) => res.json(newUser))
+                .catch((err) => res.status(400).json(err));
+        })
+        .catch((err) => res.status(400).json(err));
 };
 
 // READ ALL
