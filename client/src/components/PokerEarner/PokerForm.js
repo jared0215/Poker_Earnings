@@ -4,45 +4,59 @@ import { useParams, Link } from "react-router-dom";
 import { Form, Button, Alert } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+// The PokerForm component is used to create a new poker game for a specific user
 const PokerForm = () => {
+    // Get the user ID from the URL parameters
     const { id } = useParams();
+
+    // Initialize state for form inputs and error message
     const [result, setResult] = useState("Win");
     const [amount, setAmount] = useState("");
     const [location, setLocation] = useState("");
     const [date, setDate] = useState("");
     const [error, setError] = useState("");
 
+    // Handle form submission
     const handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Prevent page refresh
+
         setError(""); // Reset error state
 
+        // Check if all fields are filled in, otherwise set error state
         if (!amount || !location || !date) {
             setError("All fields are required"); // Set error message if any field is empty
             return;
         }
 
+        // Format date to ISO string
         let serverDate = new Date(date);
         let dateToSend = serverDate.toISOString();
 
+        // Create a new poker game object
         const newPokerGame = {
-            user: id,
-            result,
-            amount,
-            location,
-            date: dateToSend, // send date in ISO string format
+            user: id, // Set user ID from URL parameters
+            result, // Set result from state
+            amount, // Set amount from state
+            location, // Set location from state
+            date: dateToSend, // Set date from state (formatted to ISO string)
         };
 
+        // Post the new poker game to the API
         axios
             .post(`http://localhost:8000/api/poker`, newPokerGame)
             .then((res) => {
+                // Log the response from the API
                 console.log(res);
                 console.log(res.data);
+
+                // Reset form fields
                 setResult("Win");
                 setAmount("");
                 setLocation("");
                 setDate("");
             })
             .catch((err) => {
+                // Log any errors
                 console.log(err);
                 console.log(err.response);
             });

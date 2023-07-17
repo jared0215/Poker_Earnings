@@ -11,31 +11,39 @@ const UserForm = ({
     heading,
     errors,
 }) => {
+    // Define local state for form fields, initialized with empty strings
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
+
+    // Define local state for initial values for the form fields
     const [initialValues, setInitialValues] = useState({
         firstName: initialFirstName,
         lastName: initialLastName,
         email: initialEmail,
     });
 
+    // Using the useEffect hook to set the local state for form fields whenever initialValues change
     useEffect(() => {
         setFirstName(initialValues.firstName);
         setLastName(initialValues.lastName);
         setEmail(initialValues.email);
     }, [initialValues]);
 
+    // Handler for form submission
     const onSubmitHandler = (e) => {
         e.preventDefault();
+        // Clear the form if there are no errors
         if (errors && Object.keys(errors).length === 0) {
             setFirstName("");
             setLastName("");
             setEmail("");
         }
+        // Call the onSubmitProp function, passed as a prop, with the current form field values
         onSubmitProp({ firstName, lastName, email });
     };
 
+    // Helper function to format errors into a string
     const formatErrors = (errorObject) => {
         return Object.values(errorObject)
             .map((error) => error.message)
@@ -43,6 +51,9 @@ const UserForm = ({
     };
 
     return (
+        // Render the form with form fields for first name, last name, and email
+        // If there are errors, they are displayed in an Alert component
+        // The onSubmitHandler function is called when the form is submitted
         <div className="bg-dark rounded fs-5 text-light mx-auto pb-5 mb-5">
             <h1 className="text-center mt-5 pt-4">{heading}</h1>
             {errors && Object.keys(errors).length > 0 && (

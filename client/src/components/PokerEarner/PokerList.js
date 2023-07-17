@@ -3,72 +3,75 @@ import axios from "axios";
 import { useParams, Link } from "react-router-dom";
 import { Button, ListGroup, ListGroupItem } from "react-bootstrap";
 
+// PokerList component displays a list of poker games for a specific user
 const PokerList = () => {
+    // Get user ID from URL
     const { id } = useParams();
+
+    // State variables for poker games list, error status, total amount and sort type
     const [pokerList, setPokerList] = useState([]);
     const [error, setError] = useState(false);
     const [totalAmount, setTotalAmount] = useState(0);
     const [sortType, setSortType] = useState("asc");
 
+    // UseEffect to fetch data from the API when component mounts or user ID changes
     useEffect(() => {
         axios
             .get(`http://localhost:8000/api/users/${id}/poker/games`)
-            .then((res) => {
-                const user = res.data;
-                setPokerList(user);
-            })
-            .catch((err) => {
-                setError(true);
-            });
+            .then((res) => setPokerList(res.data))
+            .catch(() => setError(true));
     }, [id]);
 
+    // UseEffect to calculate total amount whenever poker list changes
     useEffect(() => {
         let total = 0;
         pokerList.forEach((pokerGame) => {
-            if (pokerGame.result === "Win") {
-                total += pokerGame.amount;
-            } else if (pokerGame.result === "Loss") {
-                total -= pokerGame.amount;
-            }
+            total +=
+                pokerGame.result === "Win"
+                    ? pokerGame.amount
+                    : -pokerGame.amount;
         });
         setTotalAmount(total);
     }, [pokerList]);
 
+    // UseEffect to sort poker list whenever sort type changes
     useEffect(() => {
         const sortedList = [...pokerList].sort((a, b) => {
-            const dateA = new Date(a.date);
-            const dateB = new Date(b.date);
-            return sortType === "asc" ? dateA - dateB : dateB - dateA;
+            return sortType === "asc"
+                ? new Date(a.date) - new Date(b.date)
+                : new Date(b.date) - new Date(a.date);
         });
         setPokerList(sortedList);
     }, [sortType]);
 
+    // Function to format date
     const formatDate = (dateString) => {
-        let serverDate = new Date(dateString);
-        let adjustedDate = new Date(
+        const serverDate = new Date(dateString);
+        const adjustedDate = new Date(
             serverDate.getTime() + serverDate.getTimezoneOffset() * 60000
         );
-        const options = { year: "numeric", month: "long", day: "numeric" };
-        let dateToShow = adjustedDate.toLocaleDateString(undefined, options);
-        return dateToShow;
+        return adjustedDate.toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
     };
 
+    // Function to handle delete game operation
     const handleDeletePoker = (pokerGameId) => {
         axios
             .delete(`http://localhost:8000/api/poker/${pokerGameId}`)
-            .then((res) => {
+            .then(() =>
                 setPokerList((prevList) =>
                     prevList.filter(
                         (pokerGame) => pokerGame._id !== pokerGameId
                     )
-                );
-            })
-            .catch((err) => {
-                console.log(err);
-                alert("There was an error deleting the game");
-            });
+                )
+            )
+            .catch((err) => console.log(err));
     };
 
+    // Return statement for rendering the component
     return (
         <div className="w-75 mx-auto mt-5">
             <h1 className="mb-4">List of Users Games</h1>
@@ -79,18 +82,22 @@ const PokerList = () => {
                 Sort by date ({sortType === "asc" ? "Descending" : "Ascending"})
             </Button>
             {error ? (
+                // Render error message
                 <div>
                     <h3>Error</h3>
                     <p>Something went wrong</p>
                 </div>
             ) : (
+                // Render poker game list
                 <div>
+                    {/* Iterate over pokerList and display each poker game */}
                     <ListGroup>
                         {pokerList.map((pokerGame) => (
                             <ListGroupItem
                                 key={pokerGame._id}
                                 className="d-flex justify-content-between"
                             >
+                                {/* Game information */}
                                 <div>
                                     <h5 className="mb-0">
                                         Location: {pokerGame.location}
@@ -111,6 +118,7 @@ const PokerList = () => {
                                         Result: {pokerGame.result}
                                     </p>
                                 </div>
+                                {/* Edit and delete buttons */}
                                 <div className="flex-row h-100 align-self-center">
                                     <Button
                                         variant="danger"
@@ -133,6 +141,7 @@ const PokerList = () => {
                             </ListGroupItem>
                         ))}
                     </ListGroup>
+                    {/* Display total amount */}
                     <h3
                         className={`mt-4 ${
                             totalAmount >= 0 ? "text-success" : "text-danger"
@@ -146,4 +155,5 @@ const PokerList = () => {
     );
 };
 
+// Export PokerList component
 export default PokerList;
