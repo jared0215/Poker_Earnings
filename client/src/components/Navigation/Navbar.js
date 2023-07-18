@@ -1,10 +1,13 @@
+// Imports
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 
+// Import logo image
 import logo from "./img/logo-no-background.png";
 
 // NavBar component to navigate between pages
+// Takes a ref object as prop to scroll to the UserList component
 const NavBar = ({ userListRef }) => {
     // Hooks to navigate between pages and get current page location
     const navigate = useNavigate();

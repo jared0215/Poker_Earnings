@@ -17,8 +17,8 @@ const PokerList = () => {
     // UseEffect to fetch data from the API when component mounts or user ID changes
     useEffect(() => {
         axios
-            .get(`http://localhost:8000/api/users/${id}/poker/games`)
-            .then((res) => setPokerList(res.data))
+            .get(`http://localhost:8000/api/users/${id}/poker/games`) // Get poker games for a specific user
+            .then((res) => setPokerList(res.data)) // Set poker list state variable
             .catch(() => setError(true));
     }, [id]);
 
@@ -26,10 +26,11 @@ const PokerList = () => {
     useEffect(() => {
         let total = 0;
         pokerList.forEach((pokerGame) => {
-            total +=
-                pokerGame.result === "Win"
-                    ? pokerGame.amount
-                    : -pokerGame.amount;
+            // Iterate over poker list and calculate total amount
+            total += // Add or subtract amount from total based on result
+                pokerGame.result === "Win" // Check if result is win or loss
+                    ? pokerGame.amount // If result is win, add amount to total
+                    : -pokerGame.amount; // If result is loss, subtract amount from total
         });
         setTotalAmount(total);
     }, [pokerList]);
@@ -37,20 +38,22 @@ const PokerList = () => {
     // UseEffect to sort poker list whenever sort type changes
     useEffect(() => {
         const sortedList = [...pokerList].sort((a, b) => {
-            return sortType === "asc"
-                ? new Date(a.date) - new Date(b.date)
-                : new Date(b.date) - new Date(a.date);
+            // Create a copy of the poker list and sort it
+            return sortType === "asc" // Sort list based on sort type
+                ? new Date(a.date) - new Date(b.date) // Sort ascending
+                : new Date(b.date) - new Date(a.date); // Sort descending
         });
-        setPokerList(sortedList);
-    }, [sortType]);
+        setPokerList(sortedList); // Set poker list state variable
+    }, [sortType]); // Run this effect whenever sort type changes
 
     // Function to format date
     const formatDate = (dateString) => {
-        const serverDate = new Date(dateString);
-        const adjustedDate = new Date(
-            serverDate.getTime() + serverDate.getTimezoneOffset() * 60000
+        const serverDate = new Date(dateString); // Create date object from date string
+        const adjustedDate = new Date( // Adjust server date to local timezone by creating new date object
+            serverDate.getTime() + serverDate.getTimezoneOffset() * 60000 // Adjustment is done by adding/subtracting timezone offset in milliseconds
         );
         return adjustedDate.toLocaleDateString(undefined, {
+            // Return formatted date string
             year: "numeric",
             month: "long",
             day: "numeric",

@@ -3,12 +3,14 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
 
+// The UserForm component is used to create a new user or update an existing user
 const UserForm = ({
+    // Props passed down from the parent component
     initialFirstName,
     initialLastName,
     initialEmail,
     onSubmitProp,
-    heading,
+    heading, // The heading prop is used to determine whether the form is for creating or updating a user
     errors,
 }) => {
     // Define local state for form fields, initialized with empty strings
@@ -45,9 +47,13 @@ const UserForm = ({
 
     // Helper function to format errors into a string
     const formatErrors = (errorObject) => {
-        return Object.values(errorObject)
-            .map((error) => error.message)
-            .join(", ");
+        return (
+            Object.values(errorObject)
+                // Map each error message to a string
+                .map((error) => error.message)
+                // Join each string into a single string separated by commas
+                .join(", ")
+        );
     };
 
     return (

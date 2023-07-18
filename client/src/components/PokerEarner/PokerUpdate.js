@@ -51,6 +51,7 @@ const PokerUpdate = () => {
 
         // Validate the form fields
         if (!amount || !location || !date) {
+            // Check if any fields are empty and set error state
             setError("All fields are required");
             return;
         }

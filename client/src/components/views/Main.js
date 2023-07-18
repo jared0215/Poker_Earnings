@@ -41,6 +41,7 @@ const Main = ({ userListRef }) => {
 
     const removeFromDom = (userId) => {
         // Update the userList state to exclude the user with the specified userId
+        // Filter creates a new array with all elements that pass the test implemented by the function
         setUserList(userList.filter((user) => user._id !== userId));
     };
 

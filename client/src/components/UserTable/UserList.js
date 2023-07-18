@@ -41,6 +41,7 @@ const UserList = (props) => {
                             <DeleteButton
                                 variant="danger"
                                 userId={user._id}
+                                // Deletes user from DOM after successful deletion
                                 successCallback={() => removeFromDom(user._id)}
                             >
                                 Delete
