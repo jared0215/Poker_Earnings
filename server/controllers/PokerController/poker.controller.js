@@ -21,6 +21,7 @@ module.exports.createPoker = (req, res) => {
             // Update the user document with the new poker game id
             return User.updateOne(
                 { _id: newPokerGame.user },
+                // Add the new poker game id to the user's pokerGames array
                 { $push: { pokerGames: newPokerGame._id } }
             ).then((updateResult) => {
                 console.log("User update result:", updateResult);
@@ -38,7 +39,7 @@ module.exports.createPoker = (req, res) => {
 // READ ALL poker games
 module.exports.getAllPokers = (req, res) => {
     Poker.find()
-        .populate("user") // Populate the user field
+        .populate("user") // Populate the user field with the associated user's document
         .then((allPokers) => res.json(allPokers)) // Send all poker games as a response
         .catch(
             (err) => res.json({ message: "Something went wrong", error: err }) // Error handling
@@ -68,6 +69,7 @@ module.exports.updatePoker = (req, res) => {
 module.exports.deletePoker = (req, res) => {
     Poker.findByIdAndRemove(req.params.id) // Find the poker game by ID and remove it
         .then((deletedPoker) => {
+            // Send the deleted poker game as a response
             if (!deletedPoker) {
                 // If no poker game is found, return an error
                 return res.status(404).json({

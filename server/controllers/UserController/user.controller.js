@@ -81,6 +81,7 @@ module.exports.deleteUser = (req, res) => {
                 });
             }
             // If user is found, delete all the associated poker games
+            // $in is a MongoDB operator that checks if an array contains any of the specified values
             return Poker.deleteMany({ _id: { $in: user.pokerGames } })
                 .then(() => {
                     return user;
