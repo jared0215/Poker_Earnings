@@ -38,9 +38,11 @@ const PokerList = () => {
         setTotalAmount(total);
     }, [pokerList]);
 
+    // Function to sort poker list
     const sortPokerList = (list, type) => {
         return [...list].sort((a, b) => {
-            return type === "asc"
+            // Create a copy of the list and sort it
+            return type === "asc" // Check sort type
                 ? new Date(a.date) - new Date(b.date) // Sort ascending
                 : new Date(b.date) - new Date(a.date); // Sort descending
         });
