@@ -19,7 +19,7 @@ const UserForm = ({
     const [email, setEmail] = useState("");
 
     // Define local state for initial values for the form fields
-    const [initialValues, setInitialValues] = useState({
+    const [initialValues] = useState({
         firstName: initialFirstName,
         lastName: initialLastName,
         email: initialEmail,
