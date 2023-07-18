@@ -18,9 +18,12 @@ const PokerList = () => {
     useEffect(() => {
         axios
             .get(`http://localhost:8000/api/users/${id}/poker/games`) // Get poker games for a specific user
-            .then((res) => setPokerList(res.data)) // Set poker list state variable
+            .then((res) => {
+                const sortedData = sortPokerList(res.data, sortType); // sort the fetched data
+                setPokerList(sortedData); // Set poker list state variable
+            })
             .catch(() => setError(true));
-    }, [id]);
+    }, [id, sortType]); // adding sortType to the dependency array
 
     // UseEffect to calculate total amount whenever poker list changes
     useEffect(() => {
@@ -35,16 +38,13 @@ const PokerList = () => {
         setTotalAmount(total);
     }, [pokerList]);
 
-    // UseEffect to sort poker list whenever sort type changes
-    useEffect(() => {
-        const sortedList = [...pokerList].sort((a, b) => {
-            // Create a copy of the poker list and sort it
-            return sortType === "asc" // Sort list based on sort type
+    const sortPokerList = (list, type) => {
+        return [...list].sort((a, b) => {
+            return type === "asc"
                 ? new Date(a.date) - new Date(b.date) // Sort ascending
                 : new Date(b.date) - new Date(a.date); // Sort descending
         });
-        setPokerList(sortedList); // Set poker list state variable
-    }, [sortType]); // Run this effect whenever sort type changes
+    };
 
     // Function to format date
     const formatDate = (dateString) => {
@@ -79,11 +79,14 @@ const PokerList = () => {
         <div className="w-75 mx-auto mt-5">
             <h1 className="mb-4">List of Users Games</h1>
             <Button
-                onClick={() => setSortType(sortType === "asc" ? "desc" : "asc")}
+                onClick={() => {
+                    setSortType(sortType === "asc" ? "desc" : "asc"); // Toggle sortType
+                }}
                 className="mb-4 mx-auto"
             >
                 Sort by date ({sortType === "asc" ? "Descending" : "Ascending"})
             </Button>
+
             {error ? (
                 // Render error message
                 <div>
